@@ -10,8 +10,8 @@ type GetScopesRespData struct {
 }
 
 type GetScopesRespDataScopes struct {
-	ScopeName string `json:"scope_name"`
-	GrantStatus int `json:"grant_status"`
+	ScopeName   string `json:"scope_name"`
+	GrantStatus int    `json:"grant_status"`
 }
 
 type ApplyScopesResp struct {
@@ -20,5 +20,4 @@ type ApplyScopesResp struct {
 }
 
 type ApplyScopesRespData struct {
-
 }

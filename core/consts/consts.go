@@ -179,6 +179,16 @@ const (
 	// https://bytedance.feishu.cn/docs/doccnHJx2UbLZh5kiWjNawICyNd#
 	ApiGetScopes   = "https://open.feishu.cn/open-apis/application/v6/scopes"
 	ApiApplyScopes = "https://open.feishu.cn/open-apis/application/v6/scopes/apply"
+
+	/// 多维表格
+	// 列出记录
+	ApiBitableGetRecords = "https://open.feishu.cn/open-apis/bitable/v1/apps/%s/tables/%s/records?filter=%s"
+	// 批量更新记录
+	ApiBitableBatchUpdate = "https://open.feishu.cn/open-apis/bitable/v1/apps/%s/tables/%s/records/batch_update"
+	// 新增多条记录
+	ApiBitableBatchCreate = "https://open.feishu.cn/open-apis/bitable/v1/apps/%s/tables/%s/records/batch_create"
+	// 删除多条记录
+	ApiBitableBatchDelete = "https://open.feishu.cn/open-apis/bitable/v1/apps/%s/tables/%s/records/batch_delete"
 )
 
 //Other Const
