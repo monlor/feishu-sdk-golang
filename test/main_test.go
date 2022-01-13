@@ -10,7 +10,7 @@ import (
 func TestMain(t *testing.T) {
 
 	appId := ""
-	appSecret := ""
+  appSecret := ""
 
 	app, err := sdk.BuildTenantInternal(appId, appSecret)
 
@@ -21,9 +21,9 @@ func TestMain(t *testing.T) {
 	t.Log(app)
 
 	appToken := ""
-	tableId := ""
-	filters := map[string]string{"修复标题": "\"测试222\"", "发布日期": "TODAY()"}
-	records, err := app.GetBitableRecords(appToken, tableId, filters)
+  tableId := ""
+	filters := map[string]string{"发布日期": "TODAY()"}
+	records, err := app.GetBitableRecords(appToken, tableId, filters, 1)
 
 	if err != nil {
 		panic(err)

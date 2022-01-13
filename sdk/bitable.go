@@ -12,7 +12,7 @@ import (
 )
 
 //多维表格 列出记录 https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table-record/list
-func (t Tenant) GetBitableRecords(appToken string, tableId string, filters map[string]string) (*vo.GetBitableRecordsResp, error) {
+func (t Tenant) GetBitableRecords(appToken string, tableId string, filters map[string]string, pageSize int) (*vo.GetBitableRecordsResp, error) {
 	filterStr := "AND("
 	i := 0
 	for k, v := range filters {
@@ -23,8 +23,7 @@ func (t Tenant) GetBitableRecords(appToken string, tableId string, filters map[s
 		}
 	}
 	filterStr += ")"
-	fmt.Printf("拼接参数：%s\n", filterStr)
-	respBody, err := http.Get(fmt.Sprintf(consts.ApiBitableGetRecords, appToken, tableId, encrypt.URLEncode(filterStr)), nil, http.BuildTokenHeaderOptions(t.TenantAccessToken))
+	respBody, err := http.Get(fmt.Sprintf(consts.ApiBitableGetRecords + "?filter=%s&page_size=%v", appToken, tableId, encrypt.URLEncode(filterStr), pageSize), nil, http.BuildTokenHeaderOptions(t.TenantAccessToken))
 	if err != nil {
 		log.Error(err)
 		return nil, err
