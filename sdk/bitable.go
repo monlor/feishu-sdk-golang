@@ -20,7 +20,7 @@ func (t Tenant) GetBitableRecords(appToken string, tableId string, filters map[s
 		i := 0
 		for k, v := range filters {
 			i++
-			filterStr += fmt.Sprintf("CurrentValue.[%s] = %s", k, v)
+			filterStr += fmt.Sprintf("CurrentValue.[%s]=%s", k, v)
 			if i != len(filters) {
 				filterStr += ","
 			}
