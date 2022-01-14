@@ -17,26 +17,34 @@ func (t Tenant) GetBitableRecords(appToken string, tableId string, filters map[s
 	fieldNameStr := ""
 	pageSizeStr := ""
 	if filters != nil {
-		filterStr = "AND("
-		i := 0
-		for k, v := range filters {
-			i++
-			filterStr += fmt.Sprintf("CurrentValue.[%s]=%s", k, v)
-			if i != len(filters) {
-				filterStr += ","
+		if len(filters) == 0 {
+			filterStr = ""
+		} else {
+			filterStr = "AND("
+			i := 0
+			for k, v := range filters {
+				i++
+				filterStr += fmt.Sprintf("CurrentValue.[%s]=%s", k, v)
+				if i != len(filters) {
+					filterStr += ","
+				}
 			}
+			filterStr += ")"
 		}
-		filterStr += ")"
 	}
 	if fieldNames != nil {
-		fieldNameStr = "["
-		for i, v := range fieldNames {
-			fieldNameStr += "\"" + v + "\""
-			if i+1 != len(fieldNames) {
-				fieldNameStr += ","
+		if len(fieldNames) == 0 {
+			fieldNameStr = ""
+		} else {
+			fieldNameStr = "["
+			for i, v := range fieldNames {
+				fieldNameStr += "\"" + v + "\""
+				if i+1 != len(fieldNames) {
+					fieldNameStr += ","
+				}
 			}
+			fieldNameStr += "]"
 		}
-		fieldNameStr += "]"
 	}
 	if pageSize != 0 {
 		pageSizeStr = fmt.Sprintf("%d", pageSize)
