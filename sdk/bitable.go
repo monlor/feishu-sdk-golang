@@ -13,17 +13,24 @@ import (
 
 //多维表格 列出记录 https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table-record/list
 func (t Tenant) GetBitableRecords(appToken string, tableId string, filters map[string]string, pageSize int) (*vo.GetBitableRecordsResp, error) {
-	filterStr := "AND("
-	i := 0
-	for k, v := range filters {
-		i++
-		filterStr += fmt.Sprintf("CurrentValue.[%s] = %s", k, v)
-		if i != len(filters) {
-			filterStr += ","
+	filterStr := ""
+	pageSizeStr := ""
+	if filters != nil {
+		filterStr = "AND("
+		i := 0
+		for k, v := range filters {
+			i++
+			filterStr += fmt.Sprintf("CurrentValue.[%s] = %s", k, v)
+			if i != len(filters) {
+				filterStr += ","
+			}
 		}
+		filterStr += ")"
 	}
-	filterStr += ")"
-	respBody, err := http.Get(fmt.Sprintf(consts.ApiBitableGetRecords + "?filter=%s&page_size=%v", appToken, tableId, encrypt.URLEncode(filterStr), pageSize), nil, http.BuildTokenHeaderOptions(t.TenantAccessToken))
+	if pageSize != 0 {
+		pageSizeStr = fmt.Sprintf("%d", pageSize)
+	}
+	respBody, err := http.Get(fmt.Sprintf(consts.ApiBitableGetRecords + "?filter=%s&page_size=%v", appToken, tableId, encrypt.URLEncode(filterStr), pageSizeStr), nil, http.BuildTokenHeaderOptions(t.TenantAccessToken))
 	if err != nil {
 		log.Error(err)
 		return nil, err
