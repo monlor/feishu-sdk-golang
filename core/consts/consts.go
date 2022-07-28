@@ -182,13 +182,17 @@ const (
 
 	/// 多维表格
 	// 列出记录
-	ApiBitableGetRecords = "https://open.feishu.cn/open-apis/bitable/v1/apps/%s/tables/%s/records"
+	ApiBitableListRecords = "https://open.feishu.cn/open-apis/bitable/v1/apps/%s/tables/%s/records"
+	// 检索记录
+	ApiBitableGetRecord = "https://open.feishu.cn/open-apis/bitable/v1/apps/%s/tables/%s/records/%s"
 	// 批量更新记录
 	ApiBitableBatchUpdate = "https://open.feishu.cn/open-apis/bitable/v1/apps/%s/tables/%s/records/batch_update"
 	// 新增多条记录
 	ApiBitableBatchCreate = "https://open.feishu.cn/open-apis/bitable/v1/apps/%s/tables/%s/records/batch_create"
 	// 删除多条记录
 	ApiBitableBatchDelete = "https://open.feishu.cn/open-apis/bitable/v1/apps/%s/tables/%s/records/batch_delete"
+	// 列出字段
+	ApiBitableListFields = "https://open.feishu.cn/open-apis/bitable/v1/apps/%s/tables/%s/fields"
 )
 
 //Other Const

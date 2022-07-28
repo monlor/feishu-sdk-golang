@@ -12,7 +12,7 @@ import (
 )
 
 //多维表格 列出记录 https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table-record/list
-func (t Tenant) GetBitableRecords(appToken string, tableId string, filters map[string]string, fieldNames []string, pageSize int) (*vo.GetBitableRecordsResp, error) {
+func (t Tenant) ListBitableRecords(appToken string, tableId string, filters map[string]interface{}, fieldNames []string, pageSize int) (*vo.ListBitableRecordsResp, error) {
 	filterStr := ""
 	fieldNameStr := ""
 	pageSizeStr := ""
@@ -24,7 +24,7 @@ func (t Tenant) GetBitableRecords(appToken string, tableId string, filters map[s
 			i := 0
 			for k, v := range filters {
 				i++
-				filterStr += fmt.Sprintf("CurrentValue.[%s]=%s", k, v)
+				filterStr += fmt.Sprintf("CurrentValue.[%s]=%v", k, v)
 				if i != len(filters) {
 					filterStr += ","
 				}
@@ -49,14 +49,27 @@ func (t Tenant) GetBitableRecords(appToken string, tableId string, filters map[s
 	if pageSize != 0 {
 		pageSizeStr = fmt.Sprintf("%d", pageSize)
 	}
-	respBody, err := http.Get(fmt.Sprintf(consts.ApiBitableGetRecords + "?filter=%s&page_size=%v&field_names=%s", 
+	respBody, err := http.Get(fmt.Sprintf(consts.ApiBitableListRecords + "?filter=%s&page_size=%v&field_names=%s", 
 		appToken, tableId, encrypt.URLEncode(filterStr), pageSizeStr, encrypt.URLEncode(fieldNameStr)), 
 		nil, http.BuildTokenHeaderOptions(t.TenantAccessToken))
 	if err != nil {
 		log.Error(err)
 		return nil, err
 	}
-	respVo := &vo.GetBitableRecordsResp{}
+	respVo := &vo.ListBitableRecordsResp{}
+	json.FromJsonIgnoreError(respBody, respVo)
+	return respVo, nil
+}
+
+//多维表格 检索记录 https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table-record/get
+func (t Tenant) GetBitableRecord(appToken string, tableId string, recordId string) (*vo.GetBitableRecordResp, error) {
+	respBody, err := http.Get(fmt.Sprintf(consts.ApiBitableGetRecord, appToken, tableId, recordId), 
+		nil, http.BuildTokenHeaderOptions(t.TenantAccessToken))
+	if err != nil {
+		log.Error(err)
+		return nil, err
+	}
+	respVo := &vo.GetBitableRecordResp{}
 	json.FromJsonIgnoreError(respBody, respVo)
 	return respVo, nil
 }
@@ -93,6 +106,23 @@ func (t Tenant) BatchDeleteBitable(appToken string, tableId string, bodyParams v
 		return nil, err
 	}
 	respVo := &vo.BatchDeleteBitableResp{}
+	json.FromJsonIgnoreError(respBody, respVo)
+	return respVo, nil
+}
+
+//多维表格 列出字段 https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table-field/list
+func (t Tenant) ListBitableFields(appToken string, tableId string, pageSize int) (*vo.ListBitableFieldsResp, error) {
+	pageSizeStr := ""
+	if (pageSize != 0) {
+		pageSizeStr = fmt.Sprintf("%d", pageSize)
+	}
+	respBody, err := http.Get(fmt.Sprintf(consts.ApiBitableListFields + "?page_size=%s", appToken, tableId, pageSizeStr), 
+		nil, http.BuildTokenHeaderOptions(t.TenantAccessToken))
+	if err != nil {
+		log.Error(err)
+		return nil, err
+	}
+	respVo := &vo.ListBitableFieldsResp{}
 	json.FromJsonIgnoreError(respBody, respVo)
 	return respVo, nil
 }
